@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevent scroll bars */
+            width: 100%;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .image-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 60vh; /* 뷰포트 높이의 60%로 설정 */
+        }
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border: 5px solid #ccc;
+            border-radius: 10px;
+        }
+        .buttons-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to right, #f6f9fc, #e9f2f9);
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        .buttons-container button {
+            width: 13%;
+            height: 120px;
+            padding: 10px;
+            border: 3px solid #4a90e2;
+            border-radius: 15px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        .buttons-container button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 20px rgba(74, 144, 226, 0.3);
+            border-color: #2a70c2;
+        }
+        .buttons-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+        .buttons-container button:hover img {
+            transform: scale(1.1);
+        }
+        #score {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 36px;
+            font-weight: bold;
+            color: #4a90e2;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 15px 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        #score:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        @media screen and (max-width: 768px) {
+            .buttons-container {
+                flex-wrap: wrap;
+            }
+            .buttons-container button {
+                width: 25%;
+                height: 80px;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="score">점수: 0 | 문제: 1/0</div>
+    <div class="image-container">
+        <img id="quizImage" src="" alt="Quiz Image">
+    </div>
+    <div class="buttons-container">
+        <button onclick="checkAnswer('paper')"><img src="/assets/기타종이.png" alt="기타종이"></button>
+        <button onclick="checkAnswer('vinyl')"><img src="/assets/비닐류.png" alt="비닐류"></button>
+        <button onclick="checkAnswer('box')"><img src="/assets/상자류.png" alt="상자류"></button>
+        <button onclick="checkAnswer('glass')"><img src="/assets/유리.png" alt="유리"></button>
+        <button onclick="checkAnswer('paperPack')"><img src="/assets/종이팩.png" alt="종이팩"></button>
+        <button onclick="checkAnswer('can')"><img src="/assets/캔류.png" alt="캔류"></button>
+        <button onclick="checkAnswer('pet')"><img src="/assets/투명페트.png" alt="투명페트"></button>
+        <button onclick="checkAnswer('plastic')"><img src="/assets/플라스틱.png" alt="플라스틱"></button>
+    </div>
+    <script>
+        var imgs = [
+            {src: '/assets/Quiz/1_1_pet.png', type: 'pet'},
+            {src: '/assets/Quiz/1_2_pla.png', type: 'plastic'},
+            {src: '/assets/Quiz/1_3_can.png', type: 'can'},
+            {src: '/assets/Quiz/1_4_gla.png', type: 'glass'},
+            {src: '/assets/Quiz/1_5_can.png', type: 'can'},
+            {src: '/assets/Quiz/1_6_pla.png', type: 'plastic'},
+            {src: '/assets/Quiz/1_7_pla.png', type: 'plastic'},
+            {src: '/assets/Quiz/1_8_pla.png', type: 'plastic'},
+            {src: '/assets/Quiz/1_9_pla.png', type: 'plastic'}
+        ];
+
+        var currentImage;
+        var score = 0;
+        var currentQuestionNumber = 1;
+        var totalQuestions = imgs.length;
+
+        function displayNextImage() {
+            if (currentQuestionNumber <= totalQuestions) {
+                currentImage = imgs[currentQuestionNumber - 1];
+                document.getElementById('quizImage').src = currentImage.src;
+            }
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = '점수: ' + score + ' | 문제: ' + currentQuestionNumber + '/' + totalQuestions;
+        }
+
+        function checkAnswer(type) {
+            if (type === currentImage.type) {
+                score++;
+                alert('정답입니다!');
+            } else {
+                alert('오답입니다. 다시 시도해보세요.');
+            }
+            currentQuestionNumber++;
+            updateScore();
+            if (currentQuestionNumber <= totalQuestions) {
+                displayNextImage();
+            } else {
+                alert('모든 문제를 풀었습니다! 최종 점수: ' + score + '/' + totalQuestions);
+                // 여기에 퀴즈 종료 후 처리할 내용을 추가할 수 있습니다.
+            }
+        }
+
+        // 화면 회전 함수
+        function lockLandscape() {
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape')
+                    .then(() => {
+                        console.log('화면이 가로 모드로 고정되었습니다.');
+                    })
+                    .catch((error) => {
+                        console.error('화면 회전 고정 실패:', error);
+                    });
+            } else {
+                console.warn('이 브라우저는 화면 회전 API를 지원하지 않습니다.');
+            }
+        }
+
+        // 페이지 로드 시 초기화
+        window.onload = function() {
+            displayNextImage();
+            updateScore();
+            
+            // 모바일 기기 확인
+            if (/Mobi|Android/i.test(navigator.userAgent)) {
+                lockLandscape();
+            }
+        };
+    </script>
+</body>
+</html>
