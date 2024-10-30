@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Game</title>
-    <meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
-    <meta name="orientation" content="landscape">
     <style>
         html, body {
             margin: 0;
@@ -165,35 +163,30 @@
             }
         }
 
-        // 화면 회전 함수 수정
+        // 화면 회전 함수
         function lockLandscape() {
-            try {
-                if (screen.orientation) {
-                    screen.orientation.lock('landscape')
-                        .then(() => {
-                            console.log('화면이 가로 모드로 고정되었습니다.');
-                        })
-                        .catch((error) => {
-                            console.error('화면 회전 고정 실패:', error);
-                        });
-                } else if (window.orientation !== undefined) {
-                    // 이전 버전 브라우저 지원
-                    window.addEventListener('orientationchange', function() {
-                        if (window.orientation === 0 || window.orientation === 180) {
-                            alert('화면을 가로로 돌려주세요!');
-                        }
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape')
+                    .then(() => {
+                        console.log('화면이 가로 모드로 고정되었습니다.');
+                    })
+                    .catch((error) => {
+                        console.error('화면 회전 고정 실패:', error);
                     });
-                }
-            } catch (e) {
-                console.error('화면 회전 설정 중 오류:', e);
+            } else {
+                console.warn('이 브라우저는 화면 회전 API를 지원하지 않습니다.');
             }
         }
 
-        // 페이지 로드 시 초기화 수정
+        // 페이지 로드 시 초기화
         window.onload = function() {
             displayNextImage();
             updateScore();
-            lockLandscape(); // 모든 기기에서 실행
+            
+            // 모바일 기기 확인
+            if (/Mobi|Android/i.test(navigator.userAgent)) {
+                lockLandscape();
+            }
         };
     </script>
 </body>
