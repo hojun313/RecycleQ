@@ -100,40 +100,167 @@
                 margin-bottom: 10px;
             }
         }
+
+        .start-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 15px;
+            font-size: 24px;
+            z-index: 1000;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .close-hint {
+            font-size: 14px;
+            color: #cccccc;
+            margin-top: 10px;
+            cursor: pointer; /* 클릭 가능함을 표시 */
+        }
+
+        .feedback-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 20px;
+            z-index: 1001;
+            text-align: center;
+            display: none; /* 초기에는 숨김 */
+        }
+        .feedback-icon {
+            font-size: 50px; /* 아이콘 크기 설정 */
+            margin-bottom: 10px; /* 아이콘과 텍스트 간격 */
+        }
+
+        #celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* 클릭 이벤트 무시 */
+            z-index: 2000; /* 다른 요소 위에 표시 */
+        }
     </style>
 </head>
 <body>
-    <div id="score">점수: 0 | 문제: 1/0</div>
+    <div id="score">점수: 0 | 문제: 1/0 | 목숨: 5</div>
+    <div id="startMessage" class="start-message">
+        보이는 쓰레기를 버릴 분리배출함을 선택해 주세요
+        <div class="close-hint">클릭하여 닫기</div>
+    </div>
+    <div id="feedbackMessage" class="feedback-message" style="display: none;">
+        <div id="feedbackIcon" class="feedback-icon"></div>
+        <div id="feedbackText"></div>
+        <div class="close-hint">클릭하여 닫기</div>
+    </div>
     <div class="image-container">
         <img id="quizImage" src="" alt="Quiz Image">
     </div>
     <div class="buttons-container">
-        <button onclick="checkAnswer('paper')"><img src="assets/기타종이.png" alt="기타종이"></button>
+        <button onclick="checkAnswer('trash')"><img src="assets/일반쓰레기.png" alt="일반쓰레기"></button>
+        <button onclick="checkAnswer('paper')"><img src="assets/기타종이.png" alt="종이"></button>
         <button onclick="checkAnswer('vinyl')"><img src="assets/비닐류.png" alt="비닐류"></button>
-        <button onclick="checkAnswer('box')"><img src="assets/상자류.png" alt="상자류"></button>
         <button onclick="checkAnswer('glass')"><img src="assets/유리.png" alt="유리"></button>
-        <button onclick="checkAnswer('paperPack')"><img src="assets/종이팩.png" alt="종이팩"></button>
         <button onclick="checkAnswer('can')"><img src="assets/캔류.png" alt="캔류"></button>
         <button onclick="checkAnswer('pet')"><img src="assets/투명페트.png" alt="투명페트"></button>
         <button onclick="checkAnswer('plastic')"><img src="assets/플라스틱.png" alt="플라스틱"></button>
     </div>
     <script>
         var imgs = [
-            {src: 'assets/Quiz/1_1_pet.png', type: 'pet'},
-            {src: 'assets/Quiz/1_2_pla.png', type: 'plastic'},
-            {src: 'assets/Quiz/1_3_can.png', type: 'can'},
-            {src: 'assets/Quiz/1_4_gla.png', type: 'glass'},
-            {src: 'assets/Quiz/1_5_can.png', type: 'can'},
-            {src: 'assets/Quiz/1_6_pla.png', type: 'plastic'},
-            {src: 'assets/Quiz/1_7_pla.png', type: 'plastic'},
-            {src: 'assets/Quiz/1_8_pla.png', type: 'plastic'},
-            {src: 'assets/Quiz/1_9_pla.png', type: 'plastic'}
+            // 비닐류
+            {src: 'assets/images/비닐류/과자봉지.jpg', type: 'vinyl'},
+            {src: 'assets/images/비닐류/김비닐봉지.jpg', type: 'vinyl'},
+            {src: 'assets/images/비닐류/라면봉지.jpg', type: 'vinyl'},
+            {src: 'assets/images/비닐류/물티슈봉지.jpg', type: 'vinyl'},
+            {src: 'assets/images/비닐류/비닐장갑.jpg', type: 'vinyl'},
+            {src: 'assets/images/비닐류/뽁뽁이.jpg', type: 'vinyl'},
+            {src: 'assets/images/비닐류/양파망.jpg', type: 'vinyl'},
+            {src: 'assets/images/비닐류/유색비닐봉지.jpg', type: 'vinyl'},
+            {src: 'assets/images/비닐류/작은비닐.jpg', type: 'vinyl'},
+            {src: 'assets/images/비닐류/택배비닐.jpg', type: 'vinyl'},
+            // 유리
+            {src: 'assets/images/유리/두유병.jpg', type: 'glass'},
+            {src: 'assets/images/유리/박카스병.jpg', type: 'glass'},
+            {src: 'assets/images/유리/와인빈병.jpg', type: 'glass'},
+            {src: 'assets/images/유리/유리병.jpg', type: 'glass'},
+            {src: 'assets/images/유리/유리병1.jpg', type: 'glass'},
+            // 일반쓰레기
+            {src: 'assets/images/일반쓰레기/계란껍데기.jpg', type: 'trash'},
+            {src: 'assets/images/일반쓰레기/고무장갑고무장화.jpg', type: 'trash'},
+            {src: 'assets/images/일반쓰레기/과일포장재.jpg', type: 'trash'},
+            {src: 'assets/images/일반쓰레기/밥그릇.jpg', type: 'trash'},
+            {src: 'assets/images/일반쓰레기/볼펜칫솔.jpg', type: 'trash'},
+            {src: 'assets/images/일반쓰레기/식용유용기.jpg', type: 'trash'},
+            {src: 'assets/images/일반쓰레기/은박봉지.jpg', type: 'trash'},
+            {src: 'assets/images/일반쓰레기/음식묻은비닐.jpg', type: 'trash'},
+            {src: 'assets/images/일반쓰레기/전구.jpg', type: 'trash'},
+            {src: 'assets/images/일반쓰레기/조개.jpg', type: 'trash'},
+            {src: 'assets/images/일반쓰레기/커피찌꺼기.jpg', type: 'trash'},
+            {src: 'assets/images/일반쓰레기/호수.jpg', type: 'trash'},
+            // 종이류
+            {src: 'assets/images/종이류/계란판.jpg', type: 'paper'},
+            {src: 'assets/images/종이류/계란판및박스.jpg', type: 'paper'},
+            {src: 'assets/images/종이류/골판지상자.jpg', type: 'paper'},
+            {src: 'assets/images/종이류/신문지.jpg', type: 'paper'},
+            {src: 'assets/images/종이류/종이뭉치.jpg', type: 'paper'},
+            {src: 'assets/images/종이류/종이박스.jpg', type: 'paper'},
+            {src: 'assets/images/종이류/책.jpg', type: 'paper'},
+            // 캔류
+            {src: 'assets/images/캔류/부탄캔.jpg', type: 'can'},
+            {src: 'assets/images/캔류/빈캔.jpg', type: 'can'},
+            {src: 'assets/images/캔류/빈캔2.jpg', type: 'can'},
+            {src: 'assets/images/캔류/알루미늄병뚜껑.jpg', type: 'can'},
+            {src: 'assets/images/캔류/음료수캔.jpg', type: 'can'},
+            {src: 'assets/images/캔류/음료캔.jpg', type: 'can'},
+            {src: 'assets/images/캔류/커피캔.jpg', type: 'can'},
+            {src: 'assets/images/캔류/통조림.jpg', type: 'can'},
+            {src: 'assets/images/캔류/통조림캔.jpg', type: 'can'},
+            // 투명페트
+            {src: 'assets/images/투명페트/생수병.jpg', type: 'pet'},
+            {src: 'assets/images/투명페트/투명.jpg', type: 'pet'},
+            {src: 'assets/images/투명페트/투명병.jpg', type: 'pet'},
+            {src: 'assets/images/투명페트/투명페트.jpg', type: 'pet'},
+            {src: 'assets/images/투명페트/투명페트1.jpg', type: 'pet'},
+            // 플라스틱
+            {src: 'assets/images/플라스틱/바나나우유병.jpg', type: 'plastic'},
+            {src: 'assets/images/플라스틱/요플레병.jpg', type: 'plastic'},
+            {src: 'assets/images/플라스틱/유색병.jpg', type: 'plastic'},
+            {src: 'assets/images/플라스틱/유색플라스틱병.jpg', type: 'plastic'},
+            {src: 'assets/images/플라스틱/일회용배달용기.jpg', type: 'plastic'},
+            {src: 'assets/images/플라스틱/일회용판.jpg', type: 'plastic'},
+            {src: 'assets/images/플라스틱/일회용플라스틱컵.jpg', type: 'plastic'},
+            {src: 'assets/images/플라스틱/플라스틱.jpg', type: 'plastic'},
+            {src: 'assets/images/플라스틱/플라스틱병.jpg', type: 'plastic'},
+            {src: 'assets/images/플라스틱/플라스틱세제병.jpg', type: 'plastic'},
+            {src: 'assets/images/플라스틱/플라스틱약병.jpg', type: 'plastic'},
+            {src: 'assets/images/플라스틱/플라스틱용기.jpg', type: 'plastic'},
         ];
+
+        // 배열을 랜덤하게 섞는 함수 추가
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                // 현재 시간 값을 시드로 사용하여 랜덤 인덱스 생성
+                const j = Math.floor((Date.now() + i) % (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
 
         var currentImage;
         var score = 0;
         var currentQuestionNumber = 1;
         var totalQuestions = imgs.length;
+        var lives = 5; // 초기 목숨 수
 
         function displayNextImage() {
             if (currentQuestionNumber <= totalQuestions) {
@@ -143,24 +270,61 @@
         }
 
         function updateScore() {
-            document.getElementById('score').textContent = '점수: ' + score + ' | 문제: ' + currentQuestionNumber + '/' + totalQuestions;
+            document.getElementById('score').textContent = '점수: ' + score + ' | 문제: ' + currentQuestionNumber + '/' + totalQuestions + ' | 목숨: ' + lives;
         }
 
         function checkAnswer(type) {
             if (type === currentImage.type) {
                 score++;
-                alert('정답입니다!');
+                showFeedback('정답입니다!', 'green'); // 정답 메시지 표시
             } else {
-                alert('오답입니다. 다시 시도해보세요.');
+                lives--; // 틀린 문제에 대해 목숨 감소
+                showFeedback('오답입니다. 다시 시도해보세요.', 'red'); // 오답 메시지 표시
             }
             currentQuestionNumber++;
             updateScore();
-            if (currentQuestionNumber <= totalQuestions) {
+            
+            if (lives <= 0) { // 목숨이 0이 될 경우
+                showFeedback('다음 기회에', 'orange'); // 메시지 표시
+                shuffleArray(imgs); // 이미지 배열을 랜덤하게 섞음
+                document.getElementById('feedbackMessage').addEventListener('click', resetGame); // 클릭 시 게임 초기화
+            } else if (currentQuestionNumber <= totalQuestions) {
                 displayNextImage();
             } else {
-                alert('모든 문제를 풀었습니다! 최종 점수: ' + score + '/' + totalQuestions);
-                // 여기에 퀴즈 종료 후 처리할 내용을 추가할 수 있습니다.
+                // 모든 문제가 출제된 경우 축하 메시지 표시
+                showFeedback('축하합니다! 모든 문제를 푸셨습니다!', 'yellow'); // 축하 메시지 색상 변경
+                shuffleArray(imgs); // 이미지 배열을 랜덤하게 섞음
+                document.getElementById('feedbackMessage').addEventListener('click', resetGame); // 클릭 시 게임 초기화
             }
+        }
+
+        function resetGame() {
+            score = 0;
+            lives = 5; // 목숨 초기화
+            currentQuestionNumber = 1;
+            updateScore();
+            displayNextImage();
+            document.getElementById('feedbackMessage').style.display = 'none'; // 메시지 숨김
+        }
+
+        function showFeedback(message, color) {
+            var feedbackElement = document.getElementById('feedbackMessage');
+            var feedbackText = document.getElementById('feedbackText');
+            var feedbackIcon = document.getElementById('feedbackIcon');
+
+            // 아이콘 설정
+            feedbackIcon.textContent = (color === 'red') ? '❌' : 
+                                         (color === 'green') ? '✅' : 
+                                         (color === 'yellow') ? '👑' : ''; // 색상에 따라 아이콘 변경
+
+            feedbackText.textContent = message;
+            feedbackElement.style.color = color;
+            feedbackElement.style.display = 'block'; // 메시지 표시
+            
+            // 클릭 시 메시지 숨김
+            feedbackElement.addEventListener('click', function() {
+                feedbackElement.style.display = 'none'; // 클릭 시 숨김
+            });
         }
 
         // 화면 회전 함수
@@ -180,8 +344,15 @@
 
         // 페이지 로드 시 초기화
         window.onload = function() {
+            shuffleArray(imgs); // 이미지 배열을 랜덤하게 섞음
+            console.log(imgs); // 섞인 배열을 콘솔에 출력하여 확인
             displayNextImage();
             updateScore();
+            
+            // 시작 메시지 클릭 이벤트 추가
+            document.getElementById('startMessage').addEventListener('click', function() {
+                this.style.display = 'none';
+            });
             
             // 모바일 기기 확인
             if (/Mobi|Android/i.test(navigator.userAgent)) {
