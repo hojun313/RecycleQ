@@ -39,23 +39,26 @@
         }
         .buttons-container {
             display: flex;
-            justify-content: space-around;
+            justify-content: flex-start; /* 버튼들을 왼쪽 정렬 */
             width: 100%;
             padding: 20px;
-            background: linear-gradient(to right, #f6f9fc, #e9f2f9);
+            background: linear-gradient(to right, #1abc9c, #8e44ad);
             border-radius: 15px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            overflow-x: auto; /* 가로 스크롤 가능 */
+            white-space: nowrap; /* 줄 바꿈 방지 */
         }
         .buttons-container button {
-            width: 13%;
-            height: 120px;
+            flex: 1; /* 버튼들이 가능한 공간을 차지하도록 설정 */
+            height: 220px;
             padding: 10px;
             border: 3px solid #4a90e2;
             border-radius: 15px;
             background: white;
             cursor: pointer;
             transition: all 0.3s ease;
-            overflow: hidden;
+            margin-right: 10px; /* 버튼 간격 추가 */
+            min-width: 100px; /* 최소 너비 설정 (필요시 조정 가능) */
         }
         .buttons-container button:hover {
             transform: translateY(-5px) scale(1.05);
@@ -151,6 +154,24 @@
             pointer-events: none; /* 클릭 이벤트 무시 */
             z-index: 2000; /* 다른 요소 위에 표시 */
         }
+
+        .button-with-overlay {
+            position: relative; /* 자식 요소의 절대 위치를 설정하기 위해 relative로 설정 */
+        }
+
+        .main-image {
+            width: 100%; /* 버튼 크기에 맞춤 */
+            height: auto; /* 비율 유지 */
+        }
+        .overlay-image {
+            position: absolute; /* 절대 위치로 설정 */
+            top: 70%; /* 상단에서 50% 위치 */
+            left: 50%; /* 좌측에서 50% 위치 */
+            width: 100%; /* 버튼 크기에 맞춤 */
+            height: 100%; /* 버튼 크기에 맞춤 */
+            pointer-events: none; /* 클릭 이벤트를 무시하여 아래 이미지를 클릭할 수 있도록 함 */
+            transform: translate(-50%, -50%); /* 중앙으로 이동 */
+        }
     </style>
 </head>
 <body>
@@ -168,13 +189,34 @@
         <img id="quizImage" src="" alt="Quiz Image">
     </div>
     <div class="buttons-container">
-        <button onclick="checkAnswer('trash')"><img src="assets/일반쓰레기.png" alt="일반쓰레기"></button>
-        <button onclick="checkAnswer('paper')"><img src="assets/기타종이.png" alt="종이"></button>
-        <button onclick="checkAnswer('vinyl')"><img src="assets/비닐류.png" alt="비닐류"></button>
-        <button onclick="checkAnswer('glass')"><img src="assets/유리.png" alt="유리"></button>
-        <button onclick="checkAnswer('can')"><img src="assets/캔류.png" alt="캔류"></button>
-        <button onclick="checkAnswer('pet')"><img src="assets/투명페트.png" alt="투명페트"></button>
-        <button onclick="checkAnswer('plastic')"><img src="assets/플라스틱.png" alt="플라스틱"></button>
+        <button onclick="checkAnswer('trash')" class="button-with-overlay">
+            <img src="assets/쓰레기통.png" alt="일반쓰레기" class="main-image">
+            <img src="assets/일반쓰레기.png" alt="Overlay Image" class="overlay-image" style="width: 50%; height: 50%;">
+        </button>
+        <button onclick="checkAnswer('trash')" class="button-with-overlay">
+            <img src="assets/쓰레기통.png" alt="일반쓰레기" class="main-image">
+            <img src="assets/기타종이.png" alt="Overlay Image" class="overlay-image" style="width: 50%; height: 50%;">
+        </button>
+        <button onclick="checkAnswer('vinyl')" class="button-with-overlay">
+            <img src="assets/쓰레기통.png" alt="일반쓰레기" class="main-image">
+            <img src="assets/비닐류.png" alt="Overlay Image" class="overlay-image" style="width: 50%; height: 50%;">
+        </button>
+        <button onclick="checkAnswer('glass')" class="button-with-overlay">
+            <img src="assets/쓰레기통.png" alt="일반쓰레기" class="main-image">
+            <img src="assets/유리.png" alt="Overlay Image" class="overlay-image" style="width: 50%; height: 50%;">
+        </button>
+        <button onclick="checkAnswer('can')" class="button-with-overlay">
+            <img src="assets/쓰레기통.png" alt="일반쓰레기" class="main-image">
+            <img src="assets/캔류.png" alt="Overlay Image" class="overlay-image" style="width: 50%; height: 50%;">
+        </button>
+        <button onclick="checkAnswer('pet')" class="button-with-overlay">
+            <img src="assets/쓰레기통.png" alt="일반쓰레기" class="main-image">
+            <img src="assets/투명페트.png" alt="Overlay Image" class="overlay-image" style="width: 50%; height: 50%;">
+        </button>
+        <button onclick="checkAnswer('plastic')" class="button-with-overlay">
+            <img src="assets/쓰레기통.png" alt="일반쓰레기" class="main-image">
+            <img src="assets/플라스틱.png" alt="Overlay Image" class="overlay-image" style="width: 50%; height: 50%;">
+        </button>
     </div>
     <script>
         var imgs = [
@@ -261,12 +303,30 @@
         var currentQuestionNumber = 1;
         var totalQuestions = imgs.length;
         var lives = 5; // 초기 목숨 수
+        var currentStage = 1; // 현재 단계
+        var stageBackgrounds = ['#f0f0f0', '#e0f7fa', '#ffe0b2', '#f1f8e9', '#e1bee7', '#fff3e0']; // 각 단계의 배경 색상
+        var backgroundMusic; // 배경음악 변수 추가
+
 
         function displayNextImage() {
             if (currentQuestionNumber <= totalQuestions) {
                 currentImage = imgs[currentQuestionNumber - 1];
                 document.getElementById('quizImage').src = currentImage.src;
+
+                // 단계에 따라 배경 색상 변경
+                document.body.style.backgroundColor = stageBackgrounds[Math.floor((currentQuestionNumber - 1) / 10)];
+
+                // 각 단계가 끝날 때 빵파레 소리 재생
+                if (currentQuestionNumber % 10 === 1) { // 10문제마다 소리 재생
+                    playCelebrationSound();
+                }
             }
+        }
+
+        // 빵파레 소리 재생 함수 추가
+        function playCelebrationSound() {
+            var audio = new Audio('assets/sounds/팡파레.mp3');
+            audio.play();
         }
 
         function updateScore() {
@@ -279,22 +339,24 @@
                 showFeedback('정답입니다!', 'green'); // 정답 메시지 표시
             } else {
                 lives--; // 틀린 문제에 대해 목숨 감소
-                showFeedback('오답입니다. 다시 시도해보세요.', 'red'); // 오답 메시지 표시
+                showFeedback('오답입니다. 다시 시도해보세요.', 'red'); // ���답 메시지 표시
             }
             currentQuestionNumber++;
             updateScore();
             
             if (lives <= 0) { // 목숨이 0이 될 경우
-                showFeedback('다음 기회에', 'orange'); // 메시지 표시
+                showFeedback('아쉽습니다! 점수: ' + score, 'yellow'); // 아쉽습니다 메시지 표시
                 shuffleArray(imgs); // 이미지 배열을 랜덤하게 섞음
-                document.getElementById('feedbackMessage').addEventListener('click', resetGame); // 클릭 시 게임 초기화
+                // 클릭 시 게임 초기화
+                document.getElementById('feedbackMessage').addEventListener('click', resetGame);
             } else if (currentQuestionNumber <= totalQuestions) {
                 displayNextImage();
             } else {
                 // 모든 문제가 출제된 경우 축하 메시지 표시
                 showFeedback('축하합니다! 모든 문제를 푸셨습니다!', 'yellow'); // 축하 메시지 색상 변경
                 shuffleArray(imgs); // 이미지 배열을 랜덤하게 섞음
-                document.getElementById('feedbackMessage').addEventListener('click', resetGame); // 클릭 시 게임 초기화
+                // 클릭 시 게임 초기화
+                document.getElementById('feedbackMessage').addEventListener('click', resetGame);
             }
         }
 
@@ -321,11 +383,17 @@
             feedbackElement.style.color = color;
             feedbackElement.style.display = 'block'; // 메시지 표시
             
-            // 클릭 시 메시지 숨김
+            // 클릭 시 메시지 숨김 (게임 초기화는 하지 않음)
             feedbackElement.addEventListener('click', function() {
-                feedbackElement.style.display = 'none'; // 클릭 시 숨김
+                feedbackElement.style.display = 'none'; // 클릭 시 메시지 숨김
             });
+
+            // 1초 후에 자동으로 메시지 숨김 (yellow일 때는 동작하지 않음)
+            setTimeout(function() {
+                feedbackElement.style.display = 'none'; // 1초 후 메시지 숨김
+            }, 1000); // 1000ms = 1초
         }
+
 
         // 화면 회전 함수
         function lockLandscape() {
@@ -342,6 +410,14 @@
             }
         }
 
+        // 배경음악 재생 함수 추가
+        function playBackgroundMusic() {
+            backgroundMusic = new Audio('assets/sounds/배경음악.mp3'); // 전역 변수에 할당
+            backgroundMusic.loop = true; // 반복 재생 설정
+            backgroundMusic.volume = 0.5; // 볼륨 조절 (0.0 ~ 1.0)
+            backgroundMusic.play();
+        }
+
         // 페이지 로드 시 초기화
         window.onload = function() {
             shuffleArray(imgs); // 이미지 배열을 랜덤하게 섞음
@@ -349,6 +425,9 @@
             displayNextImage();
             updateScore();
             
+            // 배경음악 재생
+            playBackgroundMusic();
+
             // 시작 메시지 클릭 이벤트 추가
             document.getElementById('startMessage').addEventListener('click', function() {
                 this.style.display = 'none';
