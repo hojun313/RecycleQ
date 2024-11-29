@@ -178,7 +178,7 @@
     <div id="score">점수: 0 | 문제: 1/0 | 목숨: 5</div>
     <div id="startMessage" class="start-message">
         보이는 쓰레기를 버릴 분리배출함을 선택해 주세요
-        <div class="close-hint">클릭하여 닫기</div>
+        <div class="close-hint">클릭하여 퀴즈 시작</div>
     </div>
     <div id="feedbackMessage" class="feedback-message" style="display: none;">
         <div id="feedbackIcon" class="feedback-icon"></div>
@@ -336,6 +336,7 @@
         function checkAnswer(type) {
             // 효과음 재생
             playClickSound(); // 클릭 시 효과음 재생
+                        // playBackgroundMusic();
 
             if (type === currentImage.type) {
                 score++;
@@ -442,6 +443,7 @@
 
             // 시작 메시지 클릭 이벤트 추가
             document.getElementById('startMessage').addEventListener('click', function() {
+                playBackgroundMusic();
                 this.style.display = 'none';
             });
             
