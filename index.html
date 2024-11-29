@@ -370,6 +370,7 @@
             updateScore();
             displayNextImage();
             document.getElementById('feedbackMessage').style.display = 'none'; // 메시지 숨김
+
         }
 
         function showFeedback(message, color) {
@@ -429,13 +430,13 @@
 
         // 페이지 로드 시 초기화
         window.onload = function() {
+            // 배경음악 재생
+            playBackgroundMusic();
             shuffleArray(imgs); // 이미지 배열을 랜덤하게 섞음
             console.log(imgs); // 섞인 배열을 콘솔에 출력하여 확인
             displayNextImage();
             updateScore();
             
-            // 배경음악 재생
-            playBackgroundMusic();
 
             // 시작 메시지 클릭 이벤트 추가
             document.getElementById('startMessage').addEventListener('click', function() {
