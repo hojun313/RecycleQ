@@ -183,7 +183,7 @@
     <div id="feedbackMessage" class="feedback-message" style="display: none;">
         <div id="feedbackIcon" class="feedback-icon"></div>
         <div id="feedbackText"></div>
-        <div class="close-hint">클릭하여 닫기</div>
+        <div class="close-hint"></div>
     </div>
     <div class="image-container">
         <img id="quizImage" src="" alt="Quiz Image">
@@ -334,12 +334,15 @@
         }
 
         function checkAnswer(type) {
+            // 효과음 재생
+            playClickSound(); // 클릭 시 효과음 재생
+
             if (type === currentImage.type) {
                 score++;
                 showFeedback('정답입니다!', 'green'); // 정답 메시지 표시
             } else {
                 lives--; // 틀린 문제에 대해 목숨 감소
-                showFeedback('오답입니다. 다시 시도해보세요.', 'red'); // ���답 메시지 표시
+                showFeedback('오답입니다', 'red'); // 오답 메시지 표시
             }
             currentQuestionNumber++;
             updateScore();
@@ -416,6 +419,12 @@
             backgroundMusic.loop = true; // 반복 재생 설정
             backgroundMusic.volume = 0.5; // 볼륨 조절 (0.0 ~ 1.0)
             backgroundMusic.play();
+        }
+
+        // 페릭 효과음 재생 함수 추가
+        function playClickSound() {
+            var audio = new Audio('assets/sounds/클릭효과음.mp3'); // 효과음 파일 경로
+            audio.play();
         }
 
         // 페이지 로드 시 초기화
