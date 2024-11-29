@@ -306,6 +306,7 @@
         var currentStage = 1; // 현재 단계
         var stageBackgrounds = ['#f0f0f0', '#e0f7fa', '#ffe0b2', '#f1f8e9', '#e1bee7', '#fff3e0']; // 각 단계의 배경 색상
         var backgroundMusic; // 배경음악 변수 추가
+        var again = false;
 
 
         function displayNextImage() {
@@ -353,7 +354,12 @@
                 showFeedback('아쉽습니다! 점수: ' + score, 'yellow'); // 아쉽습니다 메시지 표시
                 shuffleArray(imgs); // 이미지 배열을 랜덤하게 섞음
                 // 클릭 시 게임 초기화
-                document.body.addEventListener('click', resetGame); // 화면의 어디를 클릭해도 작동
+                if (again){
+                    location.reload(); // 현재 페이지를 새로고침
+                }
+                else{
+                    again = true;
+                }
             } else if (currentQuestionNumber <= totalQuestions) {
                 displayNextImage();
             } else {
