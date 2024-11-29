@@ -325,6 +325,7 @@
 
         // 빵파레 소리 재생 함수 추가
         function playCelebrationSound() {
+            playBackgroundMusic();
             var audio = new Audio('assets/sounds/팡파레.mp3');
             audio.play();
         }
@@ -352,7 +353,7 @@
                 showFeedback('아쉽습니다! 점수: ' + score, 'yellow'); // 아쉽습니다 메시지 표시
                 shuffleArray(imgs); // 이미지 배열을 랜덤하게 섞음
                 // 클릭 시 게임 초기화
-                document.getElementById('feedbackMessage').addEventListener('click', resetGame);
+                document.body.addEventListener('click', resetGame); // 화면의 어디를 클릭해도 작동
             } else if (currentQuestionNumber <= totalQuestions) {
                 displayNextImage();
             } else {
@@ -365,6 +366,7 @@
         }
 
         function resetGame() {
+            playBackgroundMusic();
             score = 0;
             lives = 5; // 목숨 초기화
             currentQuestionNumber = 1;
@@ -375,6 +377,7 @@
         }
 
         function showFeedback(message, color) {
+            playBackgroundMusic();
             var feedbackElement = document.getElementById('feedbackMessage');
             var feedbackText = document.getElementById('feedbackText');
             var feedbackIcon = document.getElementById('feedbackIcon');
