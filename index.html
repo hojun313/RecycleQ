@@ -416,10 +416,12 @@
 
         // 배경음악 재생 함수 추가
         function playBackgroundMusic() {
-            backgroundMusic = new Audio('assets/sounds/배경음악.mp3'); // 전역 변수에 할당
-            backgroundMusic.loop = true; // 반복 재생 설정
-            backgroundMusic.volume = 0.5; // 볼륨 조절 (0.0 ~ 1.0)
-            backgroundMusic.play();
+            if (!backgroundMusic || backgroundMusic.paused) { // 배경음악이 없거나 일시정지 상태일 때만 재생
+                backgroundMusic = new Audio('assets/sounds/배경음악.mp3'); // 전역 변수에 할당
+                backgroundMusic.loop = true; // 반복 재생 설정
+                backgroundMusic.volume = 0.5; // 볼륨 조절 (0.0 ~ 1.0)
+                backgroundMusic.play();
+            }
         }
 
         // 페릭 효과음 재생 함수 추가
