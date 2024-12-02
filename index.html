@@ -41,16 +41,14 @@
             display: flex;
             justify-content: flex-start; /* 버튼들을 왼쪽 정렬 */
             width: 100%;
-            padding: 20px;
+            padding: 10px;
             background: linear-gradient(to right, #1abc9c, #8e44ad);
             border-radius: 15px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             overflow-x: auto; /* 가로 스크롤 가능 */
-            white-space: nowrap; /* 줄 바꿈 방지 */
         }
         .buttons-container button {
             flex: 1; /* 버튼들이 가능한 공간을 차지하도록 설정 */
-            height: 220px;
             padding: 10px;
             border: 3px solid #4a90e2;
             border-radius: 15px;
@@ -58,7 +56,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             margin-right: 10px; /* 버튼 간격 추가 */
-            min-width: 100px; /* 최소 너비 설정 (필요시 조정 가능) */
+            min-width: 10px; /* 최소 너비 설정 (필요시 조정 가능) */
         }
         .buttons-container button:hover {
             transform: translateY(-5px) scale(1.05);
@@ -87,22 +85,22 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
+            font-size: calc(10px + 2vw);
         }
         #score:hover {
             transform: scale(1.05);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
 
-        @media screen and (max-width: 768px) {
+        /* @media screen and (max-width: 500px) {
             .buttons-container {
                 flex-wrap: wrap;
             }
             .buttons-container button {
                 width: 25%;
-                height: 80px;
-                margin-bottom: 10px;
+                height: 110px;
             }
-        }
+        } */
 
         .start-message {
             position: fixed;
@@ -195,7 +193,7 @@
         </button>
         <button onclick="checkAnswer('trash')" class="button-with-overlay">
             <img src="assets/쓰레기통.png" alt="일반쓰레기" class="main-image">
-            <img src="assets/기타종이.png" alt="Overlay Image" class="overlay-image" style="width: 50%; height: 50%;">
+            <img src="assets/종이.png" alt="Overlay Image" class="overlay-image" style="width: 50%; height: 50%;">
         </button>
         <button onclick="checkAnswer('vinyl')" class="button-with-overlay">
             <img src="assets/쓰레기통.png" alt="일반쓰레기" class="main-image">
@@ -243,6 +241,7 @@
             {src: 'assets/images/일반쓰레기/과일포장재.jpg', type: 'trash'},
             {src: 'assets/images/일반쓰레기/밥그릇.jpg', type: 'trash'},
             {src: 'assets/images/일반쓰레기/볼펜칫솔.jpg', type: 'trash'},
+            {src: 'assets/images/일반쓰레기/생선뼈1.jpg', type: 'trash'},
             {src: 'assets/images/일반쓰레기/식용유용기.jpg', type: 'trash'},
             {src: 'assets/images/일반쓰레기/은박봉지.jpg', type: 'trash'},
             {src: 'assets/images/일반쓰레기/음식묻은비닐.jpg', type: 'trash'},
@@ -332,7 +331,7 @@
         }
 
         function updateScore() {
-            document.getElementById('score').textContent = '점수: ' + score + ' | 문제: ' + currentQuestionNumber + '/' + totalQuestions + ' | 목숨: ' + lives;
+            document.getElementById('score').innerHTML = '점수: ' + score + '<br>문제: ' + currentQuestionNumber + '/' + totalQuestions + '<br>목숨: ' + lives;
         }
 
         function checkAnswer(type) {
