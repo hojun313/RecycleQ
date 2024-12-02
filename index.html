@@ -407,22 +407,6 @@
             }, 1000); // 1000ms = 1초
         }
 
-
-        // 화면 회전 함수
-        function lockLandscape() {
-            if (screen.orientation && screen.orientation.lock) {
-                screen.orientation.lock('landscape')
-                    .then(() => {
-                        console.log('화면이 가로 모드로 고정되었습니다.');
-                    })
-                    .catch((error) => {
-                        console.error('화면 회전 고정 실패:', error);
-                    });
-            } else {
-                console.warn('이 브라우저는 화면 회전 API를 지원하지 않습니다.');
-            }
-        }
-
         // 배경음악 재생 함수 추가
         function playBackgroundMusic() {
             if (!backgroundMusic || backgroundMusic.paused) { // 배경음악이 없거나 일시정지 상태일 때만 재생
@@ -454,11 +438,6 @@
                 playBackgroundMusic();
                 this.style.display = 'none';
             });
-            
-            // 모바일 기기 확인
-            if (/Mobi|Android/i.test(navigator.userAgent)) {
-                lockLandscape();
-            }
         };
     </script>
 </body>
