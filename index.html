@@ -46,9 +46,10 @@
             border-radius: 15px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             overflow-x: auto; /* 가로 스크롤 가능 */
+            flex-wrap: wrap; /* 버튼들이 여러 줄로 배치되도록 설정 */
         }
         .buttons-container button {
-            flex: 1; /* 버튼들이 가능한 공간을 차지하도록 설정 */
+            flex: 0 0 24.4%; /* 각 버튼이 가로 25%를 차지하도록 설정 */
             padding: 1px;
             border: 3px solid #4a90e2;
             border-radius: 15px;
@@ -109,7 +110,7 @@
             transform: translate(-50%, -50%);
             background-color: rgba(0, 0, 0, 0.8);
             color: white;
-            padding: 20px 40px;
+            padding: 10px 20px;
             border-radius: 15px;
             font-size: 24px;
             z-index: 1000;
@@ -241,7 +242,7 @@
             {src: 'assets/images/일반쓰레기/v과일포장재.jpg', type: 'trash'},
             {src: 'assets/images/일반쓰레기/v밥그릇.jpg', type: 'trash'},
             {src: 'assets/images/일반쓰레기/v볼펜칫솔.jpg', type: 'trash'},
-            {src: 'assets/images/일반쓰레기/v생선뼈1.jpg', type: 'trash'},
+            {src: 'assets/images/일반쓰레기/v생선뼈.jpg', type: 'trash'},
             {src: 'assets/images/일반쓰레기/v식용유용기.jpg', type: 'trash'},
             {src: 'assets/images/일반쓰레기/v은박봉지.jpg', type: 'trash'},
             {src: 'assets/images/일반쓰레기/v음식묻은비닐.jpg', type: 'trash'},
@@ -326,7 +327,7 @@
         // 빵파레 소리 재생 함수 추가
         function playCelebrationSound() {
             playBackgroundMusic();
-            var audio = new Audio('assets/sounds/팡파레.mp3');
+            var audio = new Audio('assets/sounds/팡파���.mp3');
             audio.play();
         }
 
