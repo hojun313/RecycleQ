@@ -49,7 +49,7 @@
             flex-wrap: wrap; /* 버튼들이 여러 줄로 배치되도록 설정 */
         }
         .buttons-container button {
-            flex: 0 0 24.4%; /* 각 버튼이 가로 25%를 차지하도록 설정 */
+            flex: 0 1 auto; /* 버튼들이 더 유연하게 배치되도록 수정 */
             padding: 1px;
             border: 3px solid #4a90e2;
             border-radius: 15px;
@@ -59,10 +59,29 @@
             margin-right: 3px; /* 버튼 간격 추가 */
             min-width: 10px; /* 최소 너비 설정 (필요시 조정 가능) */
         }
+
+        /* 가로가 세로보다 길 때 */
+        @media (orientation: landscape) {
+            .buttons-container button {
+                flex: 1;
+            }
+        }
+
+        /* 세로가 가로보다 길 때 */
+        @media (orientation: portrait) {
+            .buttons-container {
+                height: 20%;
+            } 
+            .buttons-container button {
+                width: 24%;
+                height: 50%;
+            }
+        }
+
         .buttons-container button:hover {
             transform: translateY(-5px) scale(1.05);
             box-shadow: 0 12px 20px rgba(74, 144, 226, 0.3);
-            border-color: #2a70c2;
+            border-color: #c22a2a;
         }
         .buttons-container img {
             width: 100%;
@@ -70,9 +89,7 @@
             object-fit: contain;
             transition: transform 0.3s ease;
         }
-        /* .buttons-container button:hover img {
-            transform: scale(1.1);
-        } */
+
         #score {
             position: absolute;
             top: 20px;
@@ -327,7 +344,7 @@
         // 빵파레 소리 재생 함수 추가
         function playCelebrationSound() {
             playBackgroundMusic();
-            var audio = new Audio('assets/sounds/팡파���.mp3');
+            var audio = new Audio('assets/sounds/팡파.mp3');
             audio.play();
         }
 
